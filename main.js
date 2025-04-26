@@ -3,7 +3,9 @@ import { GameObject } from './gameObjects.js';
 const blockSize = 20,cols = 15,rows = 30;
 const theme = new Audio("./gameSounds/tetris-theme-korobeiniki-rearranged-arr-for-strings-185592.mp3");
 theme.loop = true;
-theme.volume = 0.5;
+theme.volume = 0.8;
+let highscore = Number(localStorage.getItem('highscore')) || 0;
+
 
 const TETROMINO_SHAPES = {
   I: [[1,1,1,1]],
@@ -82,6 +84,7 @@ function spawnPiece() {
   drawNextPiece();
   if (hasCollisionAtSpawn()) {
     alert("Game Over!");
+    gameOver();
     resetGame();
   }
 }
@@ -124,9 +127,9 @@ function draw() {
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
       if (grid[row][col]) {
-        context.fillStyle = '#E86262';
+        context.fillStyle = 'white';
         context.fillRect(col * blockSize, row * blockSize, blockSize, blockSize);
-        context.strokeStyle = '#92ABEA';
+        context.strokeStyle = 'black';
         context.strokeRect(col * blockSize, row * blockSize, blockSize, blockSize);
       }
     }
@@ -177,9 +180,15 @@ function togglePause() {
   const pauseButton = document.getElementById("pauseButton");
   const pausedBanner = document.getElementById("pauseBanner");
   paused = !paused;
-  if(paused){
+  if (paused) {
     pausedBanner.classList.remove("hidden");
-  }else if(!paused){
+    
+    const highscoreDisplay = document.getElementById('highscoreDisplay');
+    if (highscoreDisplay) {
+      highscoreDisplay.innerText = `HIGH SCORE: ${highscore}`;
+    }
+  }
+  else if(!paused){
     pausedBanner.classList.add("hidden");
   }
   pauseButton.innerText = paused ? "RESUME" : "PAUSE";
@@ -188,3 +197,10 @@ function togglePause() {
 window.addEventListener("click",()=>{
   theme.play().catch(e=>console.log(e));
 })
+
+function gameOver() {
+  if (score > highscore) {
+    highscore = score;
+    localStorage.setItem('highscore', highscore);
+  }
+}

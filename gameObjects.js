@@ -90,7 +90,6 @@ const TETROMINO_SHAPES = {
     }
   
     rotate() {
-      // transpose + reverse rows
       const M = this.matrix;
       const rotated = M[0].map((_, c) =>
         M.map(row => row[c]).reverse()
@@ -101,7 +100,6 @@ const TETROMINO_SHAPES = {
     }
   
     lock() {
-      // mark each filled cell into the grid
       this.matrix.forEach((matrixRow, rowIndex) => {
         matrixRow.forEach((cell, colIndex) => {
           if (cell) {
@@ -121,15 +119,12 @@ const TETROMINO_SHAPES = {
     }
   
     _collision(matrix, testCol, testRow) {
-      // check every filled cell
       for (let rowIndex = 0; rowIndex < matrix.length; rowIndex++) {
         for (let colIndex = 0; colIndex < matrix[rowIndex].length; colIndex++) {
           if (!matrix[rowIndex][colIndex]) continue;
   
           const gridCol = testCol + colIndex;
           const gridRow = testRow + rowIndex;
-  
-          // left/right boundary or below bottom
           if (
             gridCol < 0 ||
             gridCol >= this.totalCols ||
@@ -137,7 +132,6 @@ const TETROMINO_SHAPES = {
           ) {
             return true;
           }
-          // overlapping an existing block
           if (gridRow >= 0 && this.grid[gridRow][gridCol]) {
             return true;
           }
@@ -146,4 +140,3 @@ const TETROMINO_SHAPES = {
       return false;
     }
   }
-  
