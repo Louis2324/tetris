@@ -111,6 +111,8 @@ body {
     border-radius: 10px;
     text-align: center;
     backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
   }
   
   .hidden {
