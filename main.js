@@ -1,6 +1,9 @@
 import { GameObject } from './gameObjects.js';
 
 const blockSize = 20,cols = 15,rows = 30;
+const theme = new Audio("./gameSounds/tetris-theme-korobeiniki-rearranged-arr-for-strings-185592.mp3");
+theme.loop = true;
+theme.volume = 0.5;
 
 const TETROMINO_SHAPES = {
   I: [[1,1,1,1]],
@@ -73,12 +76,10 @@ function randomPieceType() {
 }
 
 function spawnPiece() {
-  const currentType = nextPieceType; // Use prepared piece
+  const currentType = nextPieceType; 
   piece = new GameObject(canvas, blockSize, context, currentType, grid, cols, rows);
-
-  nextPieceType = randomPieceType(); // Get ready for the next one
+  nextPieceType = randomPieceType(); 
   drawNextPiece();
-
   if (hasCollisionAtSpawn()) {
     alert("Game Over!");
     resetGame();
@@ -183,3 +184,7 @@ function togglePause() {
   }
   pauseButton.innerText = paused ? "RESUME" : "PAUSE";
 }
+
+window.addEventListener("click",()=>{
+  theme.play().catch(e=>console.log(e));
+})
